@@ -1,5 +1,27 @@
 
 from board import Board
+from game import Game
+
+
+# Testing X starts and players take turns
+def test_players_take_turns():
+    game = Game()
+
+    assert game.current_player == "X"
+    game.make_move(0, 0)
+    assert game.current_player == "O"
+
+    game.make_move(1, 1)
+    assert game.current_player == "X"
+
+
+# Testing invalid move does not change turn
+def test_invalid_move_keeps_turn():
+    game = Game()
+
+    game.make_move(0, 0)
+    assert game.make_move(0, 0) is False
+    assert game.current_player == "O"
 
 
 # Testing that new board has 9 empty cells
