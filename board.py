@@ -42,3 +42,8 @@ class Board:
 
     def is_full(self):
         return len(self.empty_cells()) == 0
+    
+    # Returning board as string
+    def __str__(self):
+        rows = [" | ".join(row) for row in self._grid]
+        return "\n---------\n".join(rows)
