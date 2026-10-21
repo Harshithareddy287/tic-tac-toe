@@ -84,7 +84,7 @@ def test_main_diagonal_win():
     assert board.has_won("X") is True
 
 
-# Testing winning on other diagonal
+# Testing win on other diagonal
 def test_other_diagonal_win():
     board = Board()
 
@@ -92,3 +92,21 @@ def test_other_diagonal_win():
         board.place_mark(i, 2 - i, "O")
 
     assert board.has_won("O") is True
+
+
+# Testing full board withoutwinner is draw
+def test_game_draw():
+    game = Game()
+
+    moves = [
+        (0, 0), (0, 1), (0, 2),
+        (1, 1), (1, 0), (1, 2),
+        (2, 1), (2, 0), (2, 2)
+    ]
+
+    for row, col in moves:
+        game.make_move(row, col)
+
+    assert game.is_draw is True
+    assert game.winner is None
+
