@@ -44,3 +44,56 @@ def test_occupied_cell_can_be_removed():
 
     board.remove_mark(1, 1)
     assert (1, 1) in board.empty_cells()
+
+def test_row_win():
+    board = Board()
+
+    for col in range(3):
+        board.place_mark(0, col, "X")
+
+    assert board.has_won("X") is True
+
+
+def test_column_win():
+    board = Board()
+
+    for row in range(3):
+        board.place_mark(row, 1, "O")
+
+    assert board.has_won("O") is True
+
+
+def test_main_diagonal_win():
+    board = Board()
+
+    for i in range(3):
+        board.place_mark(i, i, "X")
+
+    assert board.has_won("X") is True
+
+
+def test_other_diagonal_win():
+    board = Board()
+
+    for i in range(3):
+        board.place_mark(i, 2 - i, "O")
+
+    assert board.has_won("O") is True
+
+
+def test_full_board():
+    board = Board()
+
+    marks = [
+        ["X", "O", "X"],
+        ["X", "O", "O"],
+        ["O", "X", "X"],
+    ]
+
+    for row in range(3):
+        for col in range(3):
+            board.place_mark(row, col, marks[row][col])
+
+    assert board.is_full() is True
+    assert board.has_won("X") is False
+    assert board.has_won("O") is False

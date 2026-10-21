@@ -22,3 +22,23 @@ class Board:
             for col in range(3)
             if self._grid[row][col] == " "
         ]
+    
+    def has_won(self, mark):
+        for row in self._grid:
+            if all(cell == mark for cell in row):
+                return True
+
+        for col in range(3):
+            if all(self._grid[row][col] == mark for row in range(3)):
+                return True
+
+        if all(self._grid[i][i] == mark for i in range(3)):
+            return True
+
+        if all(self._grid[i][2 - i] == mark for i in range(3)):
+            return True
+
+        return False
+
+    def is_full(self):
+        return len(self.empty_cells()) == 0
