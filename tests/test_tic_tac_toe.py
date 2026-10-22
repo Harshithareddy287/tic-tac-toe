@@ -1,6 +1,6 @@
 import random
 import pytest
-from ai import AIPlayer, EasyAI
+from ai import AIPlayer, EasyAI, HardAI
 from board import Board
 from game import Game
 
@@ -126,3 +126,21 @@ def test_easy_ai():
     ai = EasyAI(random.Random(42))
     assert ai.choose_move(board, "O") in board.empty_cells()
 
+# Testing  Hard AI chooses a winning move
+def test_hard_ai_wins():
+    board = Board()
+    board.place_mark(0, 0, "O")
+    board.place_mark(0, 1, "O")
+
+    assert HardAI(random.Random(42)).choose_move(board, "O") == (0, 2)
+
+
+# Testing that Hard AI leaves board unchanged
+def test_hard_ai_keeps_board():
+    board = Board()
+    board.place_mark(0, 0, "X")
+
+    before = str(board)
+    HardAI(random.Random(42)).choose_move(board, "O")
+
+    assert str(board) == before
