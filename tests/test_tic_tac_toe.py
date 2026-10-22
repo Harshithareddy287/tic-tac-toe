@@ -1,4 +1,6 @@
-
+import random
+import pytest
+from ai import AIPlayer, EasyAI
 from board import Board
 from game import Game
 
@@ -109,4 +111,18 @@ def test_game_draw():
 
     assert game.is_draw is True
     assert game.winner is None
+
+# Testing AIPlayer is abstract
+def test_abstract_ai():
+    with pytest.raises(TypeError):
+        AIPlayer()
+
+
+# Testing Easy AI picks an empty cell
+def test_easy_ai():
+    board = Board()
+    board.place_mark(0, 0, "X")
+
+    ai = EasyAI(random.Random(42))
+    assert ai.choose_move(board, "O") in board.empty_cells()
 
