@@ -1,4 +1,6 @@
-
+import random
+import pytest
+from ai import AIPlayer, EasyAI, HardAI
 from board import Board
 from game import Game
 
@@ -110,3 +112,65 @@ def test_game_draw():
     assert game.is_draw is True
     assert game.winner is None
 
+# Testing AIPlayer is abstract
+def test_abstract_ai():
+    with pytest.raises(TypeError):
+        AIPlayer()
+
+
+# Testing Easy AI picks an empty cell
+def test_easy_ai():
+    board = Board()
+    board.place_mark(0, 0, "X")
+
+    ai = EasyAI(random.Random(42))
+    assert ai.choose_move(board, "O") in board.empty_cells()
+
+# Testing  Hard AI chooses a winning move
+def test_hard_ai_wins():
+    board = Board()
+    board.place_mark(0, 0, "O")
+    board.place_mark(0, 1, "O")
+
+    assert HardAI(random.Random(42)).choose_move(board, "O") == (0, 2)
+
+
+# Testing that Hard AI leaves board unchanged
+def test_hard_ai_keeps_board():
+    board = Board()
+    board.place_mark(0, 0, "X")
+
+    before = str(board)
+    HardAI(random.Random(42)).choose_move(board, "O")
+
+    assert str(board) == before
+
+# Testing Hard AI never loses
+def test_hard_ai_never_loses():
+    ai = HardAI(random.Random(42))
+
+    def play(board):
+        if board.has_won("X"):
+            return False
+        if board.has_won("O") or board.is_full():
+            return True
+
+        for row, col in board.empty_cells():
+            board.place_mark(row, col, "X")
+
+            if board.has_won("X") or board.is_full():
+                safe = not board.has_won("X")
+            else:
+                move = ai.choose_move(board, "O")
+                board.place_mark(*move, "O")
+                safe = play(board)
+                board.remove_mark(*move)
+
+            board.remove_mark(row, col)
+
+            if not safe:
+                return False
+
+        return True
+
+    assert play(Board())

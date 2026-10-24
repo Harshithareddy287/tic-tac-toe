@@ -1,12 +1,12 @@
 from board import Board
 
-
 class Game:
-    def __init__(self):
+    def __init__(self, ai_player=None):
         self.board = Board()
         self.current_player = "X"
         self.winner = None
         self.is_draw = False
+        self.ai_player = ai_player
 
     def make_move(self, row, col):
         # Stop moves after game has ended
@@ -33,3 +33,14 @@ class Game:
                 self.current_player = "X"
 
         return True
+
+    # Computer makes a move as O
+    def make_ai_move(self):
+        if self.ai_player is None or self.current_player != "O":
+            return False
+
+        if self.winner is not None or self.is_draw:
+            return False
+
+        row, col = self.ai_player.choose_move(self.board, "O")
+        return self.make_move(row, col)
