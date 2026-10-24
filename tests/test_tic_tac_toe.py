@@ -144,3 +144,33 @@ def test_hard_ai_keeps_board():
     HardAI(random.Random(42)).choose_move(board, "O")
 
     assert str(board) == before
+
+# Testing Hard AI never loses
+def test_hard_ai_never_loses():
+    ai = HardAI(random.Random(42))
+
+    def play(board):
+        if board.has_won("X"):
+            return False
+        if board.has_won("O") or board.is_full():
+            return True
+
+        for row, col in board.empty_cells():
+            board.place_mark(row, col, "X")
+
+            if board.has_won("X") or board.is_full():
+                safe = not board.has_won("X")
+            else:
+                move = ai.choose_move(board, "O")
+                board.place_mark(*move, "O")
+                safe = play(board)
+                board.remove_mark(*move)
+
+            board.remove_mark(row, col)
+
+            if not safe:
+                return False
+
+        return True
+
+    assert play(Board())

@@ -94,3 +94,13 @@ I will work on two feature branches:
 
 1. `feature/board-and-rules` — Create the Board class, implement the two-player game, write board tests, and add CI.
 2. `feature/ai-opponents` — Add Easy and Hard AI, computer mode, more tests, and finish the documentation.
+
+## 5. What changed
+
+I followed most of my original plan without making any major changes to the design. I created separate classes for the Board, game logic, and AI players as planned.
+
+I used a nested list to store the board and kept it private using `_grid`. I also used an abstract AI class with EasyAI and HardAI subclasses. EasyAI picks random available moves, while HardAI uses minimax to find the best move.
+
+I added 15 pytest tests to check the board, player turns, invalid moves, wins, draws, and AI behavior. I also included a test to check that HardAI does not lose when playing second.
+
+I completed the project using two feature branches, `feature/board-and-rules` and `feature/ai-opponents`, and used GitHub Actions to run the tests automatically.
